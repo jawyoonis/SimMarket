@@ -63,12 +63,22 @@ class BrokerOurs:
         # return [(i, 100) for i in range(1, 101)]
         average_price = sum(self.other_data['Cleared Price'])/len(self.other_data['Cleared Price'])
         average_quantity = sum(self.other_data['Total Demand'])/len(self.other_data['Total Demand'])
-        print("averageprice", average_price)
-        print("averagequantity", average_quantity)
+        print("average price", average_price)
+        print("average quantity", average_quantity)
+
+        for i in range(len(self.other_data['Cleared Price'])):
+
+            current_price = self.other_data['Cleared Price'][i]
+            current_demand = self.other_data['Total Demand'][i]
+            print(current_price, "current price", i)
+            print(current_demand, "current demand", i)
+            demand_difference = (current_demand/average_quantity)*100-100
+            print(demand_difference, "demand difference", i)
 
         # need to calculate the current price and quantity
         # see how much much it is less or higher than the average price and quantity
         # then we gotta randomize it based on that, I have no idea
+        # what to do if the demand is lower or higher than the average demand
 
 
 
