@@ -4,7 +4,7 @@ import random
 ## Check power and cash balances
 
 from functions import *
-from Broker import Broker
+from ourBroker import BrokerOurs
 from Tariff import Tariff, Customer
 
 class Server():
@@ -21,7 +21,7 @@ class Server():
         ## You need to initialize a Broker here (change the name in the
         ## imports at the top to reflect your broker's name), and then
         ## put it in the list self.brokers.
-        self.brokers   = [ Broker(1) ]
+        self.brokers   = [ BrokerOurs(1) ]
         self.customers = [ Customer() for i in range(100) ]
         self.tariffs   = [ self.DT ]
 
