@@ -55,7 +55,7 @@ class BrokerOurs:
         print(other_data)
 
     # Returns a list of asks of the form ( price, quantity ).
-    def post_asks(self):
+    def post_asks(self,time):
         # prices = self.other_data["Cleared Quantity"]
         # for i in range(len(prices)):
         #     if i % 24 ==0:
@@ -74,7 +74,7 @@ class BrokerOurs:
 
 
     ## Returns a list of Tariff objects.
-    def post_tariffs(self):
+    def post_tariffs(self, time):
         return [Tariff(self.idx, price=100, duration=3, exitfee=0)]
 
     ## Receives data for the last time period from the server.
@@ -84,12 +84,12 @@ class BrokerOurs:
     ## Returns a negative number if the broker doesn't have enough energy to
     ## meet demand.  Returns a positive number otherwise.
     def get_energy_imbalance( self, data ):
-        demand = sum( [data[i] for i in self.customers] )
-        return self.power - demand
+        return self.power
 
     def gain_revenue( self, customers, data ):
         for c in self.customers:
             self.cash += data[c] * customers[c].tariff.price
+            self.power -= data[c]
 
     ## Alter broker's cash balance based on supply/demand match.
     def adjust_cash( self, amt ):
