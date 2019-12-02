@@ -10,8 +10,8 @@ class BrokerOurs:
         self.idx = idx
         self.cash = 0
         self.power = 0
-        self.usage = None
-        self.other = None
+        self.customer_usage = None
+        self.other_data = None
 
         # Lists to contain:
         # asks: tuples of the form ( quantity, price )
@@ -33,26 +33,26 @@ class BrokerOurs:
 
     def get_initial_data(self, usage_data, other_data):
 
-        # self.customer_usage = usage_data
-        # self.other_data = other_data
-        usage_data = {}
-        other_data = {}
-
-        customer_file = open('CustomerNums.csv', 'r')
-        all_data = [i[:-1].split(',')[1:] for i in customer_file.readlines()[1:]]
-        for i in range(1, len(all_data) + 1):
-            usage_data[i] = [float(j) for j in all_data[i-1]]
-        customer_file.close()
-
-        other_file = open('OtherData.csv')
-        all_data = [i[:-1].split(',')[1:] for i in other_file.readlines()[1:]]
-        other_data['Cleared Price'] = [float(j) for j in all_data[0]]
-        other_data['Cleared Quantity'] = [float(j) for j in all_data[1]]
-        other_data['Difference'] = [float(j) for j in all_data[2]]
-        other_data['Total Demand'] = [float(j) for j in all_data[3]]
-        self.usage = usage_data
-        self.other = other_data
-        print(other_data)
+        self.customer_usage = usage_data
+        self.other_data = other_data
+        # usage_data = {}
+        # other_data = {}
+        #
+        # customer_file = open('CustomerNums.csv', 'r')
+        # all_data = [i[:-1].split(',')[1:] for i in customer_file.readlines()[1:]]
+        # for i in range(1, len(all_data) + 1):
+        #     usage_data[i] = [float(j) for j in all_data[i-1]]
+        # customer_file.close()
+        #
+        # other_file = open('OtherData.csv')
+        # all_data = [i[:-1].split(',')[1:] for i in other_file.readlines()[1:]]
+        # other_data['Cleared Price'] = [float(j) for j in all_data[0]]
+        # other_data['Cleared Quantity'] = [float(j) for j in all_data[1]]
+        # other_data['Difference'] = [float(j) for j in all_data[2]]
+        # other_data['Total Demand'] = [float(j) for j in all_data[3]]
+        # self.usage = usage_data
+        # self.other = other_data
+        # print(other_data)
 
     # Returns a list of asks of the form ( price, quantity ).
     def post_asks(self,time):
@@ -61,8 +61,8 @@ class BrokerOurs:
         #     if i % 24 ==0:
         #         print(prices[i])
         # return [(i, 100) for i in range(1, 101)]
-        average_price = sum(self.other['Cleared Price'])/len(self.other['Cleared Price'])
-        average_quantity = sum(self.other['Total Demand'])/len(self.other['Total Demand'])
+        average_price = sum(self.other_data['Cleared Price'])/len(self.other_data['Cleared Price'])
+        average_quantity = sum(self.other_data['Total Demand'])/len(self.other_data['Total Demand'])
         print("averageprice", average_price)
         print("averagequantity", average_quantity)
 
