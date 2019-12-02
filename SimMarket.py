@@ -2,7 +2,7 @@ import math
 import random
 
 from functions import *
-from ourBroker import Broker_ours
+from ourBroker import BrokerOurs
 from Tariff import Tariff, Customer
 
 class Server():
@@ -19,7 +19,7 @@ class Server():
         ## You need to initialize a Broker here (change the name in the
         ## imports at the top to reflect your broker's name), and then
         ## put it in the list self.brokers.
-        b = Broker_ours(1)
+        b = BrokerOurs(1)
         self.brokers  = [b]
         self.customers = [ Customer() for i in range(100) ]
         self.tariffs   = [ self.DT ]
