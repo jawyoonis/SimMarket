@@ -35,27 +35,9 @@ class BrokerOurs:
 
         self.customer_usage = usage_data
         self.other_data = other_data
-        # usage_data = {}
-        # other_data = {}
-        #
-        # customer_file = open('CustomerNums.csv', 'r')
-        # all_data = [i[:-1].split(',')[1:] for i in customer_file.readlines()[1:]]
-        # for i in range(1, len(all_data) + 1):
-        #     usage_data[i] = [float(j) for j in all_data[i-1]]
-        # customer_file.close()
-        #
-        # other_file = open('OtherData.csv')
-        # all_data = [i[:-1].split(',')[1:] for i in other_file.readlines()[1:]]
-        # other_data['Cleared Price'] = [float(j) for j in all_data[0]]
-        # other_data['Cleared Quantity'] = [float(j) for j in all_data[1]]
-        # other_data['Difference'] = [float(j) for j in all_data[2]]
-        # other_data['Total Demand'] = [float(j) for j in all_data[3]]
-        # self.usage = usage_data
-        # self.other = other_data
-        # print(other_data)
 
     # Returns a list of asks of the form ( price, quantity ).
-    def post_asks(self,time):
+    def post_asks(self, time):
         # prices = self.other_data["Cleared Quantity"]
         # for i in range(len(prices)):
         #     if i % 24 ==0:
