@@ -52,16 +52,25 @@ class BrokerOurs:
         other_data['Total Demand'] = [float(j) for j in all_data[3]]
         self.usage = usage_data
         self.other = other_data
-        print(other_data['Cleared Price'])
+        print(other_data)
 
     # Returns a list of asks of the form ( price, quantity ).
-    def post_asks( self ):
+    def post_asks(self):
         # prices = self.other_data["Cleared Quantity"]
         # for i in range(len(prices)):
         #     if i % 24 ==0:
         #         print(prices[i])
         # return [(i, 100) for i in range(1, 101)]
-        pass
+        average_price = sum(self.other['Cleared Price'])/len(self.other['Cleared Price'])
+        average_quantity = sum(self.other['Total Demand'])/len(self.other['Total Demand'])
+        print("averageprice", average_price)
+        print("averagequantity", average_quantity)
+
+        # need to calculate the current price and quantity
+        # see how much much it is less or higher than the average price and quantity
+        # then we gotta randomize it based on that, I have no idea
+
+
 
 
     ## Returns a list of Tariff objects.
