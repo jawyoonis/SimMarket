@@ -1,6 +1,15 @@
 from Tariff import Tariff
 import random
 
+import pandas_datareader.data as web
+import pandas as pd
+import datetime as dt
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import style
+
+
+
 
 class BrokerOurs:
 
@@ -36,26 +45,68 @@ class BrokerOurs:
         self.customer_usage = usage_data
         self.other_data = other_data
 
+
+
+    def simulation_price(self):
+        style.use('ggplot')
+        prices= self.other_data["Cleared Price"]
+        series = pd.Series(np.array(prices))
+        returns= series.pct_change()
+        # print(returns)
+
+        # print(prices)
+        last_price= self.other_data["Cleared Price"][-1]
+        # print(last_price)
+        num_simulations = 10
+        num_days = 14
+        simulation_df = pd.DataFrame()
+        for x in range(num_simulations):
+            count = 0
+            daily_vol = returns.std()
+
+            predicted_prices = []
+            price = last_price * (1 + np.random.normal(0, daily_vol))
+            predicted_prices.append(price)
+            for y in range(num_days):
+                if count == 13:
+                    break
+                price = predicted_prices[count] * (1 + np.random.normal(0, daily_vol))
+                predicted_prices.append(price)
+                count += 1
+            simulation_df[x] = predicted_prices
+        # fig = plt.figure()
+        # fig.suptitle('Monte Carlo Simulation: cleared prices')
+        # plt.plot(simulation_df)
+        # plt.axhline(y = last_price, color = 'r', linestyle = '-')
+        # plt.xlabel('Day')
+        # plt.ylabel('Price')
+        # plt.show()
+            print(predicted_prices)
+
     # Returns a list of asks of the form ( price, quantity ).
     def post_asks(self, time):
         # prices = self.other_data["Cleared Quantity"]
         # for i in range(len(prices)):
         #     if i % 24 ==0:
         #         print(prices[i])
-        # return [(i, 100) for i in range(1, 101)]
+
         average_price = sum(self.other_data['Cleared Price'])/len(self.other_data['Cleared Price'])
         average_quantity = sum(self.other_data['Total Demand'])/len(self.other_data['Total Demand'])
-        print("average price", average_price)
-        print("average quantity", average_quantity)
+        # print("average price", average_price)
+        # print("average quantity", average_quantity)
 
-        for i in range(len(self.other_data['Cleared Price'])):
+        # for i in range(len(self.other_data['Cleared Price'])):
+        #
+        #     current_price = self.other_data['Cleared Price'][-i]
+        #
+        #     # current_demand = self.other_data['Total Demand'][i]
+        #     print(current_price, "current price")
+            # print(current_demand, "current demand", i)
+            # demand_difference = (current_demand/average_quantity)*100-100
+            # print(demand_difference, "demand difference", i)
 
-            current_price = self.other_data['Cleared Price'][i]
-            current_demand = self.other_data['Total Demand'][i]
-            print(current_price, "current price", i)
-            print(current_demand, "current demand", i)
-            demand_difference = (current_demand/average_quantity)*100-100
-            print(demand_difference, "demand difference", i)
+        self.simulation_price()
+        return [(i, 100) for i in range(1, 101)]
 
         # need to calculate the current price and quantity
         # see how much much it is less or higher than the average price and quantity
@@ -72,7 +123,7 @@ class BrokerOurs:
     ## Receives data for the last time period from the server.
     def receive_message( self, msg ):
         pass
-        
+
     ## Returns a negative number if the broker doesn't have enough energy to
     ## meet demand.  Returns a positive number otherwise.
     def get_energy_imbalance( self, data ):

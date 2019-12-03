@@ -74,9 +74,9 @@ class Server():
             for c in range(len(self.customers)):
                 t = self.customers[c].choose_tariff( self.tariffs )
 
-            for b in self.brokers:                    
+            for b in self.brokers:
                 b.customers = [ i for i in range(len(self.customers)) if \
-                                self.customers[i].tariff.publisher == b.idx ]            
+                                self.customers[i].tariff.publisher == b.idx ]
 
             ## newdata is a dictionary to hold updated information from the current
             ## time step.  Total is the total energy demand from all 100 customers,
@@ -89,7 +89,7 @@ class Server():
                        'Cleared Quantity': quantity,
                        'Customer Usage': usage,
                        'Tariffs': self.tariffs}
-            
+
             for b in self.brokers:
                 b.receive_message( newdata )
 
@@ -103,15 +103,16 @@ class Server():
                 self.tariffs.extend( b.post_tariffs( step ) )
 
     def clear_market( self, asks, bids ):
-        
+
         bids.sort()
         asks.sort(reverse=True)
 
         total_asked = 0
         total_bidded = 0
         i, j = 0, 0
-        
+
         while True:
+
             if total_asked < total_bidded:
                 total_asked += asks[i][1]
                 i += 1
@@ -135,13 +136,13 @@ class Server():
                     j -= 1
                 price = ( abs( asks[i][0] + bids[j][0] ) ) / 2
                 quantity = total_asked
-        
+
         return price, quantity
 
     def read_initial_data( self ):
         customer_usage = dict()
         other_data = dict()
-        
+
         f = open( 'CustomerNums.csv', 'r' )
         raw = [i[:-1].split(',')[1:] for i in f.readlines()[1:]]
         for i in range(1, len(raw) + 1):
