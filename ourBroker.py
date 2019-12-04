@@ -1,6 +1,6 @@
 from Tariff import Tariff
 import random
-
+import csv
 import pandas_datareader.data as web
 import pandas as pd
 import datetime as dt
@@ -48,40 +48,65 @@ class BrokerOurs:
 
 
     def simulation_price(self):
-        style.use('ggplot')
+        # style.use('ggplot')
         prices= self.other_data["Cleared Price"]
         series = pd.Series(np.array(prices))
+        # how much the prices given time. in this case each hour
         returns= series.pct_change()
         # print(returns)
 
-        # print(prices)
+        #last price of the cleared prices
         last_price= self.other_data["Cleared Price"][-1]
-        # print(last_price)
-        num_simulations = 10
-        num_days = 14
+        min_cleared_price= min(prices)
+        # print(" min", min_cleared_price)
+
+        # number of simulations
+        num_simulations = 1000
+        num_hours = 335
         simulation_df = pd.DataFrame()
         for x in range(num_simulations):
             count = 0
-            daily_vol = returns.std()
+            hourly_vol = returns.std()
+            # print(hourly_vol)
 
             predicted_prices = []
-            price = last_price * (1 + np.random.normal(0, daily_vol))
+            price = last_price * (1 + np.random.normal(0, hourly_vol))
+            # print(price)
             predicted_prices.append(price)
-            for y in range(num_days):
-                if count == 13:
+            for y in range(num_hours):
+                if count == 334:
                     break
-                price = predicted_prices[count] * (1 + np.random.normal(0, daily_vol))
+                #normal distributions here
+                price = predicted_prices[count] * (1 + np.random.normal(0, hourly_vol))
                 predicted_prices.append(price)
                 count += 1
             simulation_df[x] = predicted_prices
-        # fig = plt.figure()
-        # fig.suptitle('Monte Carlo Simulation: cleared prices')
-        # plt.plot(simulation_df)
-        # plt.axhline(y = last_price, color = 'r', linestyle = '-')
-        # plt.xlabel('Day')
-        # plt.ylabel('Price')
-        # plt.show()
-            print(predicted_prices)
+            # print(predicted_prices)
+            result_price=[]
+
+            for i in range(len(predicted_prices)):
+                if predicted_prices[i] > min_cleared_price:
+                    result_price.append(predicted_prices[i])
+            # resultFyle = open("predictedPrices.csv",'w')
+            # resultFyle.write("Predicted-Prices " + str(result_price) + "\n")
+            # resultFyle.close()
+
+
+        # print(predicted_prices)
+    def quantity_calculations(self):
+        # quantity= Demand* Customer- energy
+        # current customer demand [0 -----24] demand(x)= [x%24]
+        total_demand= self.other_data["Total Demand"]
+        for i in range(len(total_demand)):
+            if i % 24==0:
+                print total_demand[i]
+
+
+        # customer_usages= self.customer_usage["Customer Usage"]
+        # customer_usages=self.customer_usage
+        # for j in range(customer_usages):
+        #     print(customer_usages[i])
+
 
     # Returns a list of asks of the form ( price, quantity ).
     def post_asks(self, time):
@@ -104,9 +129,13 @@ class BrokerOurs:
             # print(current_demand, "current demand", i)
             # demand_difference = (current_demand/average_quantity)*100-100
             # print(demand_difference, "demand difference", i)
-
         self.simulation_price()
-        return [(i, 100) for i in range(1, 101)]
+        self.quantity_calculations()
+
+
+
+
+        return [(i, 10) for i in range(1, 11)]
 
         # need to calculate the current price and quantity
         # see how much much it is less or higher than the average price and quantity
