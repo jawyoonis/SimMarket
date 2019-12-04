@@ -145,8 +145,10 @@ class Server():
 
         f = open( 'CustomerNums.csv', 'r' )
         raw = [i[:-1].split(',')[1:] for i in f.readlines()[1:]]
+        # print(str(raw)+ "\n")
         for i in range(1, len(raw) + 1):
             customer_usage[i] = [ float(dat) for dat in raw[i-1] ]
+
         f.close()
 
         f = open( 'OtherData.csv' )

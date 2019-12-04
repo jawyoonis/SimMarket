@@ -87,25 +87,24 @@ class BrokerOurs:
             for i in range(len(predicted_prices)):
                 if predicted_prices[i] > min_cleared_price:
                     result_price.append(predicted_prices[i])
-            resultFyle = open("predictedPrices.csv",'w')
-            resultFyle.write("Predicted-Prices " + str(result_price) + "\n")
-            resultFyle.close()
+            # resultFyle = open("predictedPrices.csv",'w')
+            # resultFyle.write("Predicted-Prices " + str(result_price) + "\n")
+            # resultFyle.close()
 
 
         # print(predicted_prices)
     def quantity_calculations(self):
-        # quantity= Demand* Customer- energy
-        # current customer demand [0 -----24] demand(x)= [x%24]
-        total_demand= self.other_data["Total Demand"]
-        for i in range(len(total_demand)):
-            if i % 24==0:
-                print total_demand[i]
-
+        df = pd.DataFrame(pd.read_csv("CustomerNums.csv",index_col=0,header=0))
+        # print(df)
+        av=[]
+        for i in range(336):
+            av.append(df[str(i)].mean())
+        print(str(av) + "\n")
 
         # customer_usages= self.customer_usage["Customer Usage"]
         # customer_usages=self.customer_usage
-        # for j in range(customer_usages):
-        #     print(customer_usages[i])
+        # for j in range(len(self.customer_usage)):
+        #     print()
 
 
     # Returns a list of asks of the form ( price, quantity ).
@@ -115,8 +114,8 @@ class BrokerOurs:
         #     if i % 24 ==0:
         #         print(prices[i])
 
-        average_price = sum(self.other_data['Cleared Price'])/len(self.other_data['Cleared Price'])
-        average_quantity = sum(self.other_data['Total Demand'])/len(self.other_data['Total Demand'])
+        # average_price = sum(self.other_data['Cleared Price'])/len(self.other_data['Cleared Price'])
+        # average_quantity = sum(self.other_data['Total Demand'])/len(self.other_data['Total Demand'])
         # print("average price", average_price)
         # print("average quantity", average_quantity)
 
