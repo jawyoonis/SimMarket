@@ -87,9 +87,9 @@ class BrokerOurs:
             for i in range(len(predicted_prices)):
                 if predicted_prices[i] > min_cleared_price:
                     result_price.append(predicted_prices[i])
-            # resultFyle = open("predictedPrices.csv",'w')
-            # resultFyle.write("Predicted-Prices " + str(result_price) + "\n")
-            # resultFyle.close()
+            resultFyle = open("predictedPrices.csv",'w')
+            resultFyle.write("Predicted-Prices " + str(result_price) + "\n")
+            resultFyle.close()
 
 
         # print(predicted_prices)
